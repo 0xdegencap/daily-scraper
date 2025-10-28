@@ -1,4 +1,4 @@
-import os
+import os, ssl
 from typing import List, Dict, Any, Optional
 import asyncpg
 from dotenv import load_dotenv
@@ -9,13 +9,16 @@ from src.types import ScrapeStats
 load_dotenv()
 logger = get_logger(__name__)
 
+ssl = ssl.create_default_context()
+
 # Database configuration
 DB_CONFIG: Dict[str, str] = {
     "user": os.getenv("DB_USER", ""),
     "password": os.getenv("DB_PASSWORD", ""),
     "database": os.getenv("DB_NAME", ""),
     "host": os.getenv("DB_HOST", ""),
-    "port": os.getenv("DB_PORT", "5432")
+    "port": os.getenv("DB_PORT", "5432"),
+    "ssl": ssl
 }
 
 if not all(DB_CONFIG.values()):
